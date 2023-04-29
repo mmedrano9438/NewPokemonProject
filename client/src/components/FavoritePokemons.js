@@ -2,22 +2,23 @@ import React, { Component, useState, useEffect } from 'react';
 import axios from 'axios';
 // import StarRating from './StarRating';
 
-const FavoritePokemons = () => {
-	const [favoritePokemons, setFavoritePokemons] = useState([]);
+const FavoritePokemons = ({ fetchFavoritePokemons, favoritePokemons }) => {
+	// const [favoritePokemons, setFavoritePokemons] = useState([]);
 
-	const getFavoritePokemonsDatabase = async () =>
-		await axios
-			.get('http://localhost:3000/pokemon')
-			.then((response) => {
-				setFavoritePokemons(response.data);
-			})
-			.catch((error) => {
-				console.error('Failed to fetch favorite Pokemons:', error);
-			});
+	// const getFavoritePokemonsDatabase = async () =>
+	// 	await axios
+	// 		.get('http://localhost:3000/pokemon')
+	// 		.then((response) => {
+	// 			setFavoritePokemons(response.data);
+	// 		})
+	// 		.catch((error) => {
+	// 			console.error('Failed to fetch favorite Pokemons:', error);
+	// 		});
 
-	//anything in bracket in line 22 will update automatically
+	// //anything in bracket in line 22 will update automatically
 	useEffect(() => {
-		getFavoritePokemonsDatabase();
+		// getFavoritePokemonsDatabase();
+		fetchFavoritePokemons();
 	}, []);
 
 	const removeFromFavorites = (pokemon) => {
@@ -34,6 +35,8 @@ const FavoritePokemons = () => {
 			})
 			.then((response) => {
 				console.log('Pokemon deleted:', response.data);
+				// getFavoritePokemonsDatabase();
+				fetchFavoritePokemons();
 			})
 			.catch((error) => {
 				console.error('Failed to delete Pokemon from favorites:', error);
@@ -50,7 +53,8 @@ const FavoritePokemons = () => {
 			.put(`http://localhost:3000/pokemon/${pokemon._id}`, updatedPokemon)
 			.then((response) => {
 				console.log('Star added:', response.data);
-				getFavoritePokemonsDatabase();
+				// getFavoritePokemonsDatabase();
+				fetchFavoritePokemons();
 			})
 			.catch((error) => {
 				console.error('Failed to add star:', error);

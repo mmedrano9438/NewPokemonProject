@@ -1,6 +1,4 @@
 import axios from 'axios';
-// import React, { Component } from 'react';
-// import { fetchPokemons } from './api';
 import './styles.css';
 import Card from './components/Card';
 import AvailablePokemons from './components/AvailablePokemons';
@@ -13,6 +11,8 @@ class App extends Component {
 			favoritePokemons: [],
 			availablePokemons: [],
 		};
+		this.fetchFavoritePokemons = this.fetchFavoritePokemons.bind(this);
+		this.fetchAvailablePokemons = this.fetchAvailablePokemons.bind(this);
 	}
 
 	componentDidMount() {
@@ -25,7 +25,7 @@ class App extends Component {
 			// .get('/pokemon')
 			.get('http://localhost:3000/pokemon')
 			.then((response) => {
-				// console.log(response, 'response in client side');
+				console.log(response, 'response in client side');
 				this.setState({ favoritePokemons: response.data });
 			})
 			.catch((error) => {
@@ -63,8 +63,14 @@ class App extends Component {
 					Continue Adding to Your Favorite List of Pokemons!!!
 				</h1>
 				<div className='container'>
-					<FavoritePokemons favoritePokemons={favoritePokemons} />
-					<AvailablePokemons availablePokemons={availablePokemons} />
+					<FavoritePokemons
+						favoritePokemons={favoritePokemons}
+						fetchFavoritePokemons={this.fetchFavoritePokemons}
+					/>
+					<AvailablePokemons
+						availablePokemons={availablePokemons}
+						fetchFavoritePokemons={this.fetchFavoritePokemons}
+					/>
 				</div>
 			</div>
 		);

@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect } from 'react';
 import axios from 'axios';
 
-const AvailablePokemons = ({ availablePokemons }) => {
+const AvailablePokemons = ({ availablePokemons, fetchFavoritePokemons }) => {
 	const handleAddToFavorites = (pokemon) => {
 		// console.log(pokemon, 'pokemonnnnn');
 
@@ -25,6 +25,7 @@ const AvailablePokemons = ({ availablePokemons }) => {
 				}
 				return axios.post('http://localhost:3000/pokemon', pokemonToAdd);
 			})
+			.then(() => fetchFavoritePokemons())
 			.catch((error) => {
 				console.error('Failed to add Pokemon to favorites:', error);
 			});
