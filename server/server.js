@@ -1,7 +1,10 @@
 const express = require('express')
+const path = require('path')
 const app = express()
 const mongoose = require('mongoose');
-const axios = require('axios');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+// const axios = require('axios');
 const { getPokemonByName, getAllPokemons, getPokemonById } = require('./helpers/pokemon');
 
 mongoose.connect('mongodb://localhost/mypokemon', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -12,19 +15,21 @@ mongoose.connect('mongodb://localhost/mypokemon', { useNewUrlParser: true, useUn
 const { PORT = 3000 } = process.env;
 
 const pokemonSchema = new mongoose.Schema({
-  id: { type: Number},
-  name: { type: String},
-  type: { type: String},
-  description: { type: String },
-  image: { type: String },
-  stars: { type: Number, default: 2 },
+  id: { type: Number, required: false },
+  name: { type: String, required: false },
+  type: { type: String, required: false },
+  description: { type: String, required: false },
+  image: { type: String, required: false },
+  stars: { type: Number, default: 77 },
   createdAt: { type: Date, default: Date.now }
 });
 
 // console.log(pokemonSchema)
-
+app.use(bodyParser.json());
+app.use(cors());
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
+app.get('/', (_, res) => res.sendFile(path.join(__dirname, '../dist')));
 
 const Pokemon = mongoose.model('Pokemon', {pokemonSchema});
 
@@ -34,7 +39,7 @@ const Pokemon = mongoose.model('Pokemon', {pokemonSchema});
 app.get('/pokemon', async (req, res) => {
   try {
     const favoritePokemons = await Pokemon.find();
-    console.log(favoritePokemons, 'favoritePOkemon')
+    // console.log(favoritePokemons, 'favoritePOkemon')
     res.setHeader('Content-Type', 'application/json');
     res.status(200).json(favoritePokemons);
   } catch (error) {
@@ -46,7 +51,7 @@ app.get('/pokemon', async (req, res) => {
 //save pokemon to my database
 app.post('/pokemon', async (req, res) => {
   const body = req.body;
-  // console.log(body, 'howdyyyy')
+  console.log(body, 'howdyyyy')
   try {
     const pokemon = await Pokemon.findOne(body);
     if (pokemon) {
@@ -96,7 +101,22 @@ app.delete('/pokemon/id/stars', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+//trying to delete the currrent data by id property
+app.delete('/pokemon/:id', async (req, res) => {
+  try {
+    const pokemon = await Pokemon.findByIdAndDelete(req.params.id);
+    if (!pokemon) {
+      return res.status(404).send('Pokemon not found');
+    }
+    console.log('Pokemon deleted:', pokemon);
+    res.status(204).send();
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
+app.use(express.static('client'))
 
 app.listen(PORT, (err) => {
   if (err) console.log(err);
