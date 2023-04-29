@@ -3,9 +3,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 // const webpack = require('webpack');
 
 module.exports = {
-    // stats: {
-    //     children: true
-    // },
     entry: "./client/src/index.js",
     output: {
         path: path.join(__dirname, "/dist"),
