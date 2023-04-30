@@ -1,6 +1,5 @@
 import axios from 'axios';
 import './styles.css';
-import Card from './components/Card';
 import AvailablePokemons from './components/AvailablePokemons';
 import FavoritePokemons from './components/FavoritePokemons';
 import React, { Component, useState, useEffect } from 'react';
@@ -22,8 +21,7 @@ class App extends Component {
 
 	fetchFavoritePokemons() {
 		axios
-			// .get('/pokemon')
-			.get('http://localhost:3000/pokemon')
+			.get('/pokemon')
 			.then((response) => {
 				this.setState({ favoritePokemons: response.data });
 			})
