@@ -25,7 +25,6 @@ class App extends Component {
 			// .get('/pokemon')
 			.get('http://localhost:3000/pokemon')
 			.then((response) => {
-				console.log(response, 'response in client side');
 				this.setState({ favoritePokemons: response.data });
 			})
 			.catch((error) => {
