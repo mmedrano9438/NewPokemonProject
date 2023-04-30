@@ -7,7 +7,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const { PORT = 3000, DB_URI } = process.env;
-
+console.log(DB_URI);
 mongoose
 	.connect(DB_URI, {
 		useNewUrlParser: true,
@@ -46,7 +46,7 @@ app.get('/pokemon', async (req, res) => {
 });
 
 app.post('/pokemon', async (req, res) => {
-	const body = req.body; // console.log(body, 'howdyyyy');
+	const body = req.body;
 	try {
 		const pokemon = await Pokemon.findOne(body);
 		if (pokemon) {
