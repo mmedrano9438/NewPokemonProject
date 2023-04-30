@@ -7,7 +7,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const { PORT = 3000, DB_URI } = process.env;
-//make sure to set environmental variable in deployed environment
+
 mongoose
 	.connect(DB_URI, {
 		useNewUrlParser: true,
@@ -28,20 +28,15 @@ const pokemonSchema = new mongoose.Schema({
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
-// app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
 app.get('/', (_, res) => res.sendFile(path.join(__dirname, '../dist')));
 
 const Pokemon = mongoose.model('Pokemon', pokemonSchema);
 
-//localhost:3000/pokemon : has the 2 Luna objects
-//accessing pokemon from my personal db
 app.get('/pokemon', async (req, res) => {
 	try {
 		const favoritePokemons = await Pokemon.find().sort({ stars: -1 });
-		// console.log(favoritePokemons, 'favoritePokemon from Get');
 		res.setHeader('Content-Type', 'application/json');
 		res.status(200).json(favoritePokemons);
 	} catch (error) {
@@ -50,12 +45,9 @@ app.get('/pokemon', async (req, res) => {
 	}
 });
 
-//save pokemon to my database
 app.post('/pokemon', async (req, res) => {
-	const body = req.body;
-	// console.log(body, 'howdyyyy');
+	const body = req.body; // console.log(body, 'howdyyyy');
 	try {
-		//if pokemon exists then give me pokemon, basically same as if statement
 		const pokemon = await Pokemon.findOne(body);
 		if (pokemon) {
 			res.status(201).send('Cannot add Pokemon twice!');
@@ -74,7 +66,6 @@ app.post('/pokemon', async (req, res) => {
 
 app.put('/pokemon/:id', async (req, res) => {
 	const pokemonId = req.params.id;
-	// const pokemonId = new mongoose.ObjectId(req.params.id);
 	const updatedPokemon = req.body;
 	console.log(updatedPokemon, 'this is updated');
 	console.log(pokemonId, 'pokeonID');
@@ -90,14 +81,10 @@ app.put('/pokemon/:id', async (req, res) => {
 	}
 });
 
-//trying to delete the currrent data by name property
 app.delete('/pokemon/:name', async (req, res) => {
-	// console.log(req.params.name, 'this is the name'); // logs the name to be deleted
 	try {
 		const { name } = req.params;
-		// console.log(name, 'name of pokemon you want to delete');
 		const pokemon = await Pokemon.findOneAndDelete(name);
-		// console.log(pokemon, 'howdyyyyy');
 		if (!pokemon) {
 			return res.status(404).send('Pokemon not found');
 		}
@@ -109,7 +96,6 @@ app.delete('/pokemon/:name', async (req, res) => {
 	}
 });
 
-//need to look up why this was necessarry
 app.use(express.static('client'));
 
 app.listen(PORT, (err) => {
@@ -118,7 +104,3 @@ app.listen(PORT, (err) => {
 });
 
 module.exports = Pokemon;
-
-//update pokemon by adding to its rank number, add by one
-//client is going to make a put request to the server,
-//and the server is going to make a get request to the db
