@@ -7,7 +7,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const { PORT = 3000, DB_URI } = process.env;
-console.log(DB_URI);
+
 mongoose
 	.connect(DB_URI, {
 		useNewUrlParser: true,
@@ -30,7 +30,9 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 app.use(cors());
 app.use(express.json());
-app.get('/', (_, res) => res.sendFile(path.join(__dirname, '../dist')));
+app.get('/', (_, res) =>
+	res.sendFile(path.join(__dirname, '../build', 'index.html'))
+);
 
 const Pokemon = mongoose.model('Pokemon', pokemonSchema);
 
