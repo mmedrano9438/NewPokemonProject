@@ -1,25 +1,20 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-// const axios = require('axios');
-const {
-	getPokemonByName,
-	getAllPokemons,
-	getPokemonById,
-} = require('./helpers/pokemon');
 
+const { PORT = 3000, DB_URI } = process.env;
+//make sure to set environmental variable in deployed environment
 mongoose
-	.connect('mongodb://localhost/mypokemon', {
+	.connect(DB_URI, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
 	.then(() => console.log('Connected to database'))
 	.catch((error) => console.error('Failed to connect to database:', error));
-
-const { PORT = 3000 } = process.env;
 
 const pokemonSchema = new mongoose.Schema({
 	id: { type: Number, required: false },

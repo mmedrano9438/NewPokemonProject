@@ -43,22 +43,31 @@ const FavoritePokemons = ({ fetchFavoritePokemons, favoritePokemons }) => {
 			});
 	};
 
-	const addStar = (pokemon) => {
+	//
+	const updateStar = (pokemon, incrementOrDecrement) => {
 		const updatedPokemon = {
 			...pokemon,
-			stars: pokemon.stars + 1,
+			stars: pokemon.stars + incrementOrDecrement,
 		};
 		console.log(updatedPokemon, 'UpdatedPokemon on client side');
 		axios
 			.put(`http://localhost:3000/pokemon/${pokemon._id}`, updatedPokemon)
 			.then((response) => {
-				console.log('Star added:', response.data);
+				console.log('Star updated:', response.data);
 				// getFavoritePokemonsDatabase();
 				fetchFavoritePokemons();
 			})
 			.catch((error) => {
-				console.error('Failed to add star:', error);
+				console.error('Failed to update star:', error);
 			});
+	};
+
+	const addStar = (pokemon) => {
+		updateStar(pokemon, 1);
+	};
+
+	const deleteStar = (pokemon) => {
+		updateStar(pokemon, -1);
 	};
 
 	return (
@@ -77,6 +86,7 @@ const FavoritePokemons = ({ fetchFavoritePokemons, favoritePokemons }) => {
 						Remove From Favorites
 					</button>
 					<button onClick={() => addStar(pokemon)}>Add Star</button>
+					<button onClick={() => deleteStar(pokemon)}>Delete Star</button>
 				</div>
 			))}
 		</div>
