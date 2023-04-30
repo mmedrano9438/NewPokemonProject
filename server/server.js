@@ -7,7 +7,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const { PORT = 3000, DB_URI } = process.env;
-
+console.log(DB_URI);
 mongoose
 	.connect(DB_URI, {
 		useNewUrlParser: true,
@@ -70,9 +70,7 @@ app.put('/pokemon/:id', async (req, res) => {
 	console.log(updatedPokemon, 'this is updated');
 	console.log(pokemonId, 'pokeonID');
 	try {
-		console.log('🚀 ~ req:', req);
 		const pokemon = await Pokemon.findByIdAndUpdate(pokemonId, updatedPokemon);
-		console.log(pokemon, 'pokemonnn im here');
 		res.setHeader('Content-Type', 'application/json');
 		res.status(200).json(pokemon);
 	} catch (error) {
