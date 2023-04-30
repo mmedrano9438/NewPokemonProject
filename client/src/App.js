@@ -3,6 +3,9 @@ import './styles.css';
 import AvailablePokemons from './components/AvailablePokemons';
 import FavoritePokemons from './components/FavoritePokemons';
 import React, { Component, useState, useEffect } from 'react';
+
+import MyForm from './components/Form';
+
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -60,6 +63,8 @@ class App extends Component {
 					Continue Adding to Your Favorite List of Pokemons!!!
 				</h1>
 				<div className='container'>
+					{/* <MyForm value={value} onChangeValue={this.onChangeValueHandler} /> */}
+					<MyForm />
 					<FavoritePokemons
 						favoritePokemons={favoritePokemons}
 						fetchFavoritePokemons={this.fetchFavoritePokemons}
