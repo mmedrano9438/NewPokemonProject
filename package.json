@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "nodemon ./server/server.js",
 		"start:client": "webpack-dev-server --mode development --hot --open",
-		"call": "webpack --mode production",
+		"build": "webpack --mode production",
 		"dev": "netlify-dev"
 	},
 	"author": "",
