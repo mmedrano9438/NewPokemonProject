@@ -10,14 +10,14 @@ const AvailablePokemons = ({ availablePokemons, fetchFavoritePokemons }) => {
 			type: pokemon.types[0].type.name,
 		};
 		axios
-			.get('http://localhost:3000/pokemon', pokemonToAdd)
+			.get(`/pokemon`, pokemonToAdd)
 			.then((response) => {
 				const favorites = response.data;
 				if (favorites && favorites.some((fav) => fav.name === pokemon.name)) {
 					console.log('Pokemon already exists in favorites:', pokemon.name);
 					return;
 				}
-				return axios.post('http://localhost:3000/pokemon', pokemonToAdd);
+				return axios.post(`/pokemon`, pokemonToAdd);
 			})
 			.then(() => fetchFavoritePokemons())
 			.catch((error) => {

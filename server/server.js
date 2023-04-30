@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-const { PORT = 3000, DB_URI } = process.env;
+const { PORT = 3000 || 3030, DB_URI } = process.env;
 console.log(DB_URI);
 mongoose
 	.connect(DB_URI, {
@@ -30,7 +30,6 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 app.use(cors());
 app.use(express.json());
-app.get('/', (_, res) => res.sendFile(path.join(__dirname, '../dist')));
 
 const Pokemon = mongoose.model('Pokemon', pokemonSchema);
 
@@ -94,7 +93,7 @@ app.delete('/pokemon/:name', async (req, res) => {
 	}
 });
 
-app.use(express.static('client'));
+app.get('*', express.static('dist'));
 
 app.listen(PORT, (err) => {
 	if (err) console.log(err);

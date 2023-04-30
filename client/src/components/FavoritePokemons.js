@@ -1,41 +1,25 @@
 import React, { Component, useState, useEffect } from 'react';
 import axios from 'axios';
-// import StarRating from './StarRating';
 
 const FavoritePokemons = ({ fetchFavoritePokemons, favoritePokemons }) => {
-	// const [favoritePokemons, setFavoritePokemons] = useState([]);
-
-	// const getFavoritePokemonsDatabase = async () =>
-	// 	await axios
-	// 		.get('http://localhost:3000/pokemon')
-	// 		.then((response) => {
-	// 			setFavoritePokemons(response.data);
-	// 		})
-	// 		.catch((error) => {
-	// 			console.error('Failed to fetch favorite Pokemons:', error);
-	// 		});
-
-	// //anything in bracket in line 22 will update automatically
 	useEffect(() => {
-		// getFavoritePokemonsDatabase();
 		fetchFavoritePokemons();
 	}, []);
 
 	const removeFromFavorites = (pokemon) => {
 		axios
-			.get('http://localhost:3000/pokemon')
+			.get(`/pokemon`)
 			.then((response) => {
 				const favoritePokemons = response.data;
 				if (
 					favoritePokemons &&
 					favoritePokemons.some((fav) => fav.name === pokemon.name)
 				) {
-					return axios.delete(`http://localhost:3000/pokemon/${pokemon.name}`);
+					return axios.delete(`/pokemon/${pokemon.name}`);
 				}
 			})
 			.then((response) => {
 				console.log('Pokemon deleted:', response.data);
-				// getFavoritePokemonsDatabase();
 				fetchFavoritePokemons();
 			})
 			.catch((error) => {
@@ -51,10 +35,9 @@ const FavoritePokemons = ({ fetchFavoritePokemons, favoritePokemons }) => {
 		};
 		console.log(updatedPokemon, 'UpdatedPokemon on client side');
 		axios
-			.put(`http://localhost:3000/pokemon/${pokemon._id}`, updatedPokemon)
+			.put(`/pokemon/${pokemon._id}`, updatedPokemon)
 			.then((response) => {
 				console.log('Star updated:', response.data);
-				// getFavoritePokemonsDatabase();
 				fetchFavoritePokemons();
 			})
 			.catch((error) => {
