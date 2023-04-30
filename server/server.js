@@ -30,9 +30,7 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 app.use(cors());
 app.use(express.json());
-app.get('/', (_, res) =>
-	res.sendFile(path.join(__dirname, '../build', 'index.html'))
-);
+app.get('/', (_, res) => res.sendFile(path.join(__dirname, '../dist')));
 
 const Pokemon = mongoose.model('Pokemon', pokemonSchema);
 
